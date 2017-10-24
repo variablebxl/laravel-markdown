@@ -1,10 +1,10 @@
 <?php
 /**
  * Laravel-Markdown
- * 
+ *
  * A small, lightweight and easy-to-use Laravel package for
  * handling markdown.
- * 
+ *
  * @author    Andreas Indal <andreas@rocketship.se>
  * @package   andreasindal/laravel-markdown
  * @link      https://github.com/andreasindal/laravel-markdown
@@ -21,7 +21,7 @@ class ParsedownDriver implements MarkdownDriver
 
     /**
      * Constructs a new ParsedownDriver instance.
-     * 
+     *
      * @param  array  $config
      */
     public function __construct(array $config)
@@ -36,7 +36,10 @@ class ParsedownDriver implements MarkdownDriver
      */
     public function text($text)
     {
-        return $this->parser->text($text);
+        $parsed_text = $this->parser->text($text);
+        // Add <figure> & Video wrapper
+        $parsed_text = $this->parseMedia($parsed_text);
+        return $parsed_text;
     }
 
     /**
@@ -60,5 +63,24 @@ class ParsedownDriver implements MarkdownDriver
         if (isset($config['breaks'])) {
             $this->parser->setBreaksEnabled($config['breaks']);
         }
+    }
+
+
+    /**
+     * Parse <img> and <iframe> tags to wrap them
+     *
+     * @param  string  $text
+     * @return string
+     */
+
+    public static function parseMedia($text)
+    {
+        // Wrap iframes (video embed)
+        $text =  preg_replace('~<iframe [^>]*>[^>]*</iframe>~', '<div class="embed-container">$0</div>', $text);
+        // Remove <p> around images
+        $text = preg_replace('%<p>(<img .*?/>)</p>%i', '$1', $text);
+        // Add <figure> around images
+        $text =  preg_replace('~<img [^>]*>~', '<figure>$0</figure>', $text);
+        return $text;
     }
 }
