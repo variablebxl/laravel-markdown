@@ -1,5 +1,15 @@
 # Laravel-Markdown
 
+A fork of https://github.com/andreasindal/laravel-markdown
+
+To add some functionalities:
+
+- wrap `<img>` tags inside html5 `<figure>`
+- wrap `<iframe≥` tags inside `<div class="embed-container">`to make the [responsive]('http://embedresponsively.com')
+
+---
+
+
 A small, lightweight and easy-to-use Laravel package for handling markdown. It comes with a facade, a helper function and a Blade directive to make life easier for you.
 
 | Laravel version | Laravel-Markdown version                                            |
