@@ -9,7 +9,7 @@
         }
     ],
     "require": {
-        "Illuminate/Support": "^5.5",
+        "Illuminate/Support": "^6.0",
         "erusev/parsedown": "^1.6"
     },
     "autoload": {
